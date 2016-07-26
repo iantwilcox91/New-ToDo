@@ -50,7 +50,7 @@ namespace ToDoList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new  SqlCommand("SELECT * FROM categories;" conn);
+      SqlCommand cmd = new  SqlCommand("SELECT * FROM categories;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -93,10 +93,19 @@ namespace ToDoList
       {
         rdr.Close();
       }
-      if (conn != conn)
+      if (conn != null)
       {
         conn.Close();
       }
+    }
+
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM categories;", conn);
+      cmd.ExecuteNonQuery();
+      conn.Close();
     }
 
     public static Category Find(int id)
@@ -130,6 +139,38 @@ namespace ToDoList
         conn.Close();
       }
       return foundCategory;
+    }
+
+    public List<Task> GetTasks()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE category_id = @CategoryId;", conn);
+      SqlParameter categoryIdParameter = new SqlParameter();
+      categoryIdParameter.ParameterName = "@CategoryId";
+      categoryIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(categoryIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Task> tasks = new List<Task> {};
+      while(rdr.Read())
+      {
+        int taskId = rdr.GetInt32(0);
+        string taskDescription = rdr.GetString(1);
+        int taskCategoryId = rdr.GetInt32(2);
+        Task newTask = new Task(taskDescription, taskCategoryId, taskId);
+        tasks.Add(newTask);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return tasks;
     }
   }
 }
