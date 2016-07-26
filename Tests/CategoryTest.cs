@@ -81,6 +81,10 @@ namespace ToDoList
       Assert.Equal(testCategory, foundCategory);
     }
 
-    //DISPOSE METHOD
+    public void Dispose()
+    {
+      Task.DeleteAll();
+      Category.DEleteAll();
+    }
   }
 }

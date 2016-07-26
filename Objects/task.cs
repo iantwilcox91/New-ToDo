@@ -109,37 +109,37 @@ namespace ToDoList
     }
 
     public static Task Find(int id)
-  {
-    SqlConnection conn = DB.Connection();
-    conn.Open();
-
-    SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE id = @TaskId;", conn);
-    SqlParameter taskIdParameter = new SqlParameter();
-    taskIdParameter.ParameterName = "@TaskId";
-    taskIdParameter.Value = id.ToString();
-    cmd.Parameters.Add(taskIdParameter);
-    SqlDataReader rdr = cmd.ExecuteReader();
-
-    int foundTaskId = 0;
-    string foundTaskDescription = null;
-    while(rdr.Read())
     {
-      foundTaskId = rdr.GetInt32(0);
-      foundTaskDescription = rdr.GetString(1);
-    }
-    Task foundTask = new Task(foundTaskDescription, foundTaskId);
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
-    if (rdr != null)
-    {
-      rdr.Close();
-    }
-    if (conn != null)
-    {
-      conn.Close();
-    }
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE id = @TaskId;", conn);
+      SqlParameter taskIdParameter = new SqlParameter();
+      taskIdParameter.ParameterName = "@TaskId";
+      taskIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(taskIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
 
-    return foundTask;
-  }
+      int foundTaskId = 0;
+      string foundTaskDescription = null;
+      while(rdr.Read())
+      {
+        foundTaskId = rdr.GetInt32(0);
+        foundTaskDescription = rdr.GetString(1);
+      }
+      Task foundTask = new Task(foundTaskDescription, foundTaskId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return foundTask;
+    }
 
 
 
