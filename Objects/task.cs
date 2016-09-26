@@ -170,7 +170,7 @@ namespace ToDoList
 
       foreach (int categoryId in categoryIds)
       {
-        SqlCommand categoryQuery = new SqlCommand("SELECT * FROM categories WHERE id = @CategoryId;", conn);
+        SqlCommand categoryQuery = new SqlCommand("SELECT * FROM category WHERE id = @CategoryId;", conn);
 
         SqlParameter categoryIdParameter = new SqlParameter();
         categoryIdParameter.ParameterName = "@CategoryId";

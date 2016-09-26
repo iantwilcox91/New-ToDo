@@ -135,6 +135,6 @@ namespace ToDoList
 
         //Assert
         Assert.Equal(testCategoryTasks, resultCategoryTasks);
-      }  
+      }
   }
 }
